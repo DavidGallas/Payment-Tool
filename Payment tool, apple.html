@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suro di Belanda 2025 - Ticket Purchase</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            background-color: blue;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        label, select, input {
+            display: block;
+            margin: 10px auto;
+        }
+        .total {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px;
+            font-size: 1.2em;
+        }
+        #qrcode {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Betaal app Stichting Behoud Nederlands Ind(ones)isch Cultureel Erfgoed</h2>
+    <div class="container">
+        <h1>Suro di Belanda 2025 - Ticket Purchase</h1>
+        <form id="ticketForm">
+            <label>Readings (10 July) - €20</label>
+            <input type="number" id="readings" value="0" min="0" onchange="calculateTotal()">
+            
+            <label>Diner and Theater (11 July) - €100</label>
+            <input type="number" id="diner" value="0" min="0" onchange="calculateTotal()">
+            
+            <label>Workshop Jamassan (12 July) - €100</label>
+            <input type="number" id="workshop" value="0" min="0" onchange="calculateTotal()">
+            
+            <label>Exposition - €5</label>
+            <input type="number" id="expo" value="0" min="0" onchange="calculateTotal()">
+            
+            <label>1 Gulden Coin - €2.50</label>
+            <input type="number" id="coin1" value="0" min="0" onchange="calculateTotal()">
+            
+            <label>5 Gulden Coin - €12.50</label>
+            <input type="number" id="coin5" value="0" min="0" onchange="calculateTotal()">
+            
+            <label>10 Gulden Coin - €25</label>
+            <input type="number" id="coin10" value="0" min="0" onchange="calculateTotal()">
+            
+            <div class="total">Total: €<span id="totalPrice">0</span></div>
+            
+            <button type="button" onclick="generateQRCode()">Generate Apple Pay QR Code</button>
+            <div id="qrcode"></div>
+        </form>
+    </div>
+    
+    <script>
+        function calculateTotal() {
+            let readings = parseInt(document.getElementById('readings').value) * 20;
+            let diner = parseInt(document.getElementById('diner').value) * 100;
+            let workshop = parseInt(document.getElementById('workshop').value) * 100;
+            let expo = parseInt(document.getElementById('expo').value) * 5;
+            let coin1 = parseInt(document.getElementById('coin1').value) * 2.50;
+            let coin5 = parseInt(document.getElementById('coin5').value) * 12.50;
+            let coin10 = parseInt(document.getElementById('coin10').value) * 25;
+            
+            let total = readings + diner + workshop + expo + coin1 + coin5 + coin10;
+            document.getElementById('totalPrice').innerText = total.toFixed(2);
+        }
+        
+        function generateQRCode() {
+            let total = document.getElementById('totalPrice').innerText;
+            if (parseFloat(total) > 0) {
+                let applePayURL = `https://applepay.example.com/pay?iban=NL87BUNQ2128924332&amount=${total}&name=Stichting%20Behoud%20Nederlands%20Indisch%20Cultureel%20Erfgoed`;
+                document.getElementById('qrcode').innerHTML = "";
+                new QRCode(document.getElementById("qrcode"), applePayURL);
+            } else {
+                alert("Please select at least one ticket or item to proceed.");
+            }
+        }
+    </script>
+    
+    <footer>
+        <p>&copy; David Gallas</p>
+    </footer>
+</body>
+</html>
